@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Platforma IoT SIOTIN</title>
+  <title>Platforma IoT</title>
   <style>
     :root {
-      --bg: #f5f7fb;
+      --bg: #f4f7fb;
       --card: #ffffff;
-      --card-2: #f8fafc;
-      --text: #1e293b;
+      --card2: #f8fafc;
+      --text: #0f172a;
       --muted: #64748b;
       --border: #e2e8f0;
       --primary: #2563eb;
@@ -20,22 +20,102 @@
       --warning-soft: #fef3c7;
       --danger: #dc2626;
       --danger-soft: #fee2e2;
-      --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+      --dark: #0f172a;
+      --shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
       --radius: 18px;
     }
 
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: Inter, system-ui, -apple-system, sans-serif;
+      font-family: Inter, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
+    }
+
+    .hidden { display: none !important; }
+
+    .login-screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 50%, #ecfeff 100%);
+      padding: 24px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 26px;
+      box-shadow: 0 24px 60px rgba(15,23,42,0.12);
+      padding: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #2563eb, #14b8a6);
+      color: white;
+      font-weight: 800;
+    }
+
+    .brand h1 { margin: 0; font-size: 1.1rem; }
+    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 0.9rem; }
+
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .input, .select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 12px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .button, .button-outline, .button-danger {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .button { background: var(--primary); color: white; }
+    .button-outline { background: white; color: var(--text); border: 1px solid var(--border); }
+    .button-danger { background: var(--danger); color: white; }
+
+    .login-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
     }
 
     .layout {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 250px 1fr;
+      grid-template-columns: 260px 1fr;
     }
 
     .sidebar {
@@ -45,31 +125,20 @@
       position: sticky;
       top: 0;
       height: 100vh;
+      overflow: auto;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
+    .sidebar .brand {
       padding-bottom: 18px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    .logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #2563eb, #14b8a6);
+    .nav {
       display: grid;
-      place-items: center;
-      font-weight: 800;
+      gap: 8px;
+      margin-top: 16px;
     }
 
-    .brand h1 { margin: 0; font-size: 1rem; }
-    .brand p { margin: 4px 0 0; font-size: 0.82rem; color: #94a3b8; }
-
-    .nav { display: grid; gap: 8px; }
     .nav button {
       border: 0;
       background: transparent;
@@ -79,10 +148,21 @@
       border-radius: 14px;
       cursor: pointer;
       font-weight: 600;
+      font: inherit;
     }
+
     .nav button:hover, .nav button.active {
       background: rgba(255,255,255,0.08);
       color: white;
+    }
+
+    .sidebar-info {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: #94a3b8;
+      font-size: 0.86rem;
+      line-height: 1.6;
     }
 
     .main {
@@ -92,33 +172,42 @@
     }
 
     .topbar {
-      background: rgba(245,247,251,0.92);
-      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 8;
+      background: rgba(244,247,251,0.94);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
       padding: 18px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
-      position: sticky;
-      top: 0;
-      z-index: 5;
     }
 
-    .topbar h2 { margin: 0; font-size: 1.3rem; }
-    .status-pill {
+    .topbar h2 { margin: 0; font-size: 1.28rem; }
+    .topbar p { margin: 4px 0 0; color: var(--muted); font-size: 0.92rem; }
+
+    .pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--success-soft);
-      color: var(--success);
       padding: 10px 14px;
       border-radius: 999px;
-      font-weight: 700;
       font-size: 0.86rem;
+      font-weight: 700;
+      background: var(--success-soft);
+      color: var(--success);
     }
 
-    .content { padding: 24px; display: grid; gap: 20px; }
+    .content {
+      padding: 24px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
 
     .card {
       background: var(--card);
@@ -137,45 +226,74 @@
       margin-bottom: 14px;
     }
 
-    .section-header h3 { margin: 0; font-size: 1.05rem; }
-    .grid { display: grid; gap: 18px; }
-    .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .widgets-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .small-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .section-header h3 { margin: 0; font-size: 1.06rem; }
 
-    .metric-card {
+    .muted { color: var(--muted); }
+
+    .grid { display: grid; gap: 18px; }
+    .dashboard-grid { grid-template-columns: 1.1fr 0.9fr; }
+    .node-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .detail-grid { grid-template-columns: 0.9fr 1.1fr; }
+    .admin-grid { grid-template-columns: 1fr 1fr; }
+
+    .node-card {
       border: 1px solid var(--border);
       background: linear-gradient(180deg, #fff 0%, #f8fbff 100%);
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 18px;
+      cursor: pointer;
+      transition: 0.2s ease;
     }
 
-    .metric-top {
+    .node-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(15,23,42,0.08);
+    }
+
+    .node-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 12px;
+      margin-bottom: 14px;
     }
 
-    .metric-icon {
+    .node-title { font-weight: 800; font-size: 1rem; }
+    .node-sub { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+
+    .icon-box {
       width: 48px;
       height: 48px;
-      border-radius: 16px;
       display: grid;
       place-items: center;
-      font-size: 1.4rem;
+      border-radius: 16px;
       background: var(--primary-soft);
       color: var(--primary);
+      font-size: 1.3rem;
     }
 
-    .metric-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 6px; }
-    .metric-value { font-size: 1.9rem; font-weight: 800; }
+    .mini-stats {
+      display: grid;
+      gap: 10px;
+    }
+
+    .mini-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+    }
 
     .badge {
       display: inline-flex;
+      align-items: center;
       padding: 6px 10px;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
     }
 
@@ -183,19 +301,42 @@
     .warning { background: var(--warning-soft); color: var(--warning); }
     .critical { background: var(--danger-soft); color: var(--danger); }
     .neutral { background: #e2e8f0; color: #475569; }
+    .info { background: var(--primary-soft); color: var(--primary); }
 
-    .muted { color: var(--muted); }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .checks {
+      display: grid;
+      gap: 8px;
+      min-width: 220px;
+    }
+
+    .chart-wrap {
+      height: 330px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+
+    canvas { width: 100%; height: 100%; }
 
     .list { display: grid; gap: 12px; }
+
     .list-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
       padding: 12px 14px;
-      border: 1px solid var(--border);
       border-radius: 14px;
-      background: var(--card-2);
+      background: var(--card2);
+      border: 1px solid var(--border);
     }
 
     .form-grid {
@@ -204,42 +345,33 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #334155;
-    }
-
-    .input, .select {
+    table {
       width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 11px 12px;
-      background: white;
-      color: var(--text);
+      border-collapse: collapse;
     }
 
-    .button, .button-outline {
-      border: 0;
-      border-radius: 12px;
-      padding: 11px 16px;
-      font-weight: 700;
-      cursor: pointer;
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
     }
 
-    .button { background: var(--primary); color: white; }
-    .button-outline { background: white; color: var(--text); border: 1px solid var(--border); }
+    th {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
 
     .switch {
       position: relative;
-      width: 52px;
+      width: 54px;
       height: 30px;
       display: inline-block;
     }
 
     .switch input { display: none; }
+
     .slider {
       position: absolute;
       inset: 0;
@@ -254,168 +386,215 @@
       position: absolute;
       width: 22px;
       height: 22px;
-      top: 4px;
       left: 4px;
+      top: 4px;
       border-radius: 50%;
       background: white;
-      transition: 0.2s ease;
       box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+      transition: 0.2s ease;
     }
 
     .switch input:checked + .slider { background: var(--primary); }
-    .switch input:checked + .slider::before { transform: translateX(22px); }
+    .switch input:checked + .slider::before { transform: translateX(24px); }
 
-    .chart-wrap {
-      height: 320px;
+    .segmented {
+      background: var(--card2);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border-radius: 14px;
+      padding: 4px;
+      display: inline-flex;
+      gap: 4px;
     }
 
-    canvas { width: 100%; height: 100%; }
+    .segmented button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 9px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
 
-    table { width: 100%; border-collapse: collapse; }
-    th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--border); }
-    th { font-size: 0.82rem; color: var(--muted); text-transform: uppercase; }
-
-    .page { display: none; }
-    .page.active { display: block; }
+    .segmented button.active {
+      background: white;
+      color: var(--text);
+      box-shadow: 0 4px 10px rgba(15,23,42,0.08);
+    }
 
     .toast {
       position: fixed;
       right: 22px;
       bottom: 22px;
-      background: #0f172a;
+      background: var(--dark);
       color: white;
       padding: 14px 16px;
       border-radius: 14px;
-      box-shadow: 0 12px 26px rgba(15,23,42,0.25);
+      box-shadow: 0 14px 30px rgba(15,23,42,0.28);
       opacity: 0;
       transform: translateY(10px);
       transition: 0.25s ease;
       pointer-events: none;
+      z-index: 30;
     }
 
-    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1100px) {
+      .dashboard-grid, .detail-grid, .admin-grid { grid-template-columns: 1fr; }
+      .node-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 920px) {
       .layout { grid-template-columns: 1fr; }
       .sidebar { position: relative; height: auto; }
-      .cards-grid, .widgets-grid, .small-grid, .form-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="layout">
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="brand">
+        <div class="brand-logo">IoT</div>
+        <div>
+          <h1>Platforma IoT</h1>
+          <p>Acces</p>
+        </div>
+      </div>
+      <div class="field">
+        <label>Rol</label>
+        <select id="loginRole" class="select">
+          <option value="admin">admin</option>
+          <option value="user">user</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id="loginEmail" class="input" value="admin@demo.ro" />
+      </div>
+      <div class="field">
+        <label>Parola</label>
+        <input id="loginPassword" class="input" type="password" value="demo123" />
+      </div>
+      <div class="login-actions">
+        <button id="loginBtn" class="button">Intrare</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="appShell" class="layout hidden">
     <aside class="sidebar">
       <div class="brand">
-        <div class="logo">IoT</div>
+        <div class="brand-logo">IoT</div>
         <div>
-          <h1>Platforma SIOTIN</h1>
-          <p>Monitorizare</p>
+          <h1 id="brandTitle">Platforma IoT</h1>
+          <p id="brandSubtitle">demo</p>
         </div>
       </div>
 
       <div class="nav">
         <button class="active" data-page="dashboard">Dashboard</button>
         <button data-page="monitorizare">Monitorizare</button>
-        <button data-page="widgeturi">Dashboard</button>
-        <button data-page="senzori">Senzori</button>
-        <button data-page="actuatori">Actuatori</button>
         <button data-page="alerte">Alerte</button>
+        <button data-page="administrare" id="adminMenuBtn">Administrare</button>
         <button data-page="setari">Setari</button>
+      </div>
+
+      <div class="sidebar-info">
+        <div>Rol: <strong id="sidebarRole">-</strong></div>
+        <div>Utilizator: <strong id="sidebarUser">-</strong></div>
+        <div>Update: <strong id="sidebarTime">-</strong></div>
       </div>
     </aside>
 
     <main class="main">
       <header class="topbar">
         <div>
-          <h2 id="titluPagina">Dashboard</h2>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p id="pageSubtitle">Noduri senzor si noduri actuator</p>
         </div>
-        <div class="status-pill">● Online</div>
+        <div class="pill">● online</div>
       </header>
 
       <div class="content">
-        <section id="pagina-dashboard" class="page active">
-          <div class="section-header">
-            <div>
-              <h3>Dashboard</h3>
+        <section id="page-dashboard" class="page active">
+          <div class="grid dashboard-grid">
+            <div class="card">
+              <div class="section-header">
+                <h3>Noduri senzor</h3>
+                <span class="muted" id="dashboardUpdate">-</span>
+              </div>
+              <div id="sensorNodeGrid" class="grid node-grid"></div>
             </div>
-            <div class="muted">Update: <strong id="ultimaActualizare">--</strong></div>
+
+            <div class="card">
+              <div class="section-header">
+                <h3>Noduri actuator</h3>
+              </div>
+              <div id="actuatorNodeGrid" class="grid node-grid"></div>
+            </div>
           </div>
 
-          <div id="dashboardCards" class="grid cards-grid"></div>
-
-          <div class="grid small-grid">
+          <div class="grid dashboard-grid">
             <div class="card">
-              <div class="section-header"><div><h3>Stare senzori</h3></div></div>
-              <div id="stareSenzori" class="list"></div>
+              <div class="section-header">
+                <h3>Alerte active</h3>
+              </div>
+              <div id="dashboardAlerts" class="list"></div>
             </div>
 
             <div class="card">
-              <div class="section-header"><div><h3>Alerte</h3></div></div>
-              <div id="alerteActiveDashboard" class="list"></div>
+              <div class="section-header">
+                <h3>Activitate recenta</h3>
+              </div>
+              <div id="activityLog" class="list"></div>
             </div>
           </div>
         </section>
 
-        <section id="pagina-monitorizare" class="page">
+        <section id="page-node-detail" class="page">
+          <div class="section-header">
+            <h3 id="detailTitle">Detalii nod</h3>
+            <button class="button-outline" onclick="openPage('dashboard')">Inapoi</button>
+          </div>
+          <div id="nodeDetailContent"></div>
+        </section>
+
+        <section id="page-monitorizare" class="page">
           <div class="card">
             <div class="section-header">
-              <div><h3>Monitorizare</h3></div>
-              <div style="display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start;">
-                <div style="display:grid; gap:8px; min-width:220px;">
-                  <label><input type="checkbox" class="metric-check" value="temperatura" checked> Temperatura aer</label>
-                  <label><input type="checkbox" class="metric-check" value="umiditateSol" checked> Umiditate sol</label>
-                </div>
-                <button class="button-outline" id="btnLive">Actualizeaza</button>
+              <h3>Monitorizare</h3>
+              <div class="toolbar">
+                <select id="monitorNodeSelect" class="select"></select>
+                <div id="monitorChecks" class="checks"></div>
+                <button class="button-outline" id="refreshChartBtn">Actualizeaza</button>
               </div>
             </div>
             <div class="chart-wrap">
-              <canvas id="chart"></canvas>
+              <canvas id="mainChart"></canvas>
             </div>
           </div>
-        </section>
-
-        <section id="pagina-widgeturi" class="page">
-          <div class="card">
-            <div class="section-header"><div><h3>Dashboard</h3></div></div>
-            <div id="listaWidgeturi" class="grid widgets-grid"></div>
-          </div>
-        </section>
-
-        <section id="pagina-senzori" class="page">
-          <div class="card">
-            <div class="section-header"><div><h3>Senzori</h3></div></div>
-            <div style="overflow:auto;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nume senzor</th>
-                    <th>Tip</th>
-                    <th>Locatie</th>
-                    <th>Status</th>
-                    <th>Ultima valoare</th>
-                  </tr>
-                </thead>
-                <tbody id="tabelSenzori"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <section id="pagina-actuatori" class="page">
-          <div class="card">
-            <div class="section-header"><div><h3>Actuatori</h3></div></div>
-            <div id="listaActuatori" class="grid widgets-grid"></div>
-          </div>
-        </section>
-
-        <section id="pagina-alerte" class="page">
-          <div class="grid small-grid">
+          <div class="grid dashboard-grid">
             <div class="card">
-              <div class="section-header"><div><h3>Praguri</h3></div></div>
+              <div class="section-header"><h3>Evenimente actuator</h3></div>
+              <div id="actuatorEventsBox" class="list"></div>
+            </div>
+            <div class="card">
+              <div class="section-header"><h3>Valori curente</h3></div>
+              <div id="monitorStats" class="list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-alerte" class="page">
+          <div class="grid dashboard-grid">
+            <div class="card">
+              <div class="section-header"><h3>Praguri</h3></div>
               <div class="form-grid">
                 <div class="field">
                   <label>Temperatura warning</label>
@@ -435,23 +614,98 @@
                 </div>
               </div>
               <div style="margin-top:14px; display:flex; justify-content:flex-end;">
-                <button class="button" id="salveazaPraguri">Salveaza</button>
+                <button class="button" id="saveThresholdsBtn">Salveaza</button>
               </div>
             </div>
-
             <div class="card">
-              <div class="section-header"><div><h3>Alerte</h3></div></div>
-              <div id="listaAlerte" class="list"></div>
+              <div class="section-header"><h3>Lista alerte</h3></div>
+              <div id="alertsList" class="list"></div>
             </div>
           </div>
         </section>
 
-        <section id="pagina-setari" class="page">
+        <section id="page-administrare" class="page">
+          <div class="grid admin-grid">
+            <div class="card">
+              <div class="section-header"><h3>Utilizatori</h3></div>
+              <div class="form-grid">
+                <div class="field">
+                  <label>Nume</label>
+                  <input id="newUserName" class="input" placeholder="Nume utilizator" />
+                </div>
+                <div class="field">
+                  <label>Email</label>
+                  <input id="newUserEmail" class="input" placeholder="email" />
+                </div>
+                <div class="field">
+                  <label>Rol</label>
+                  <select id="newUserRole" class="select">
+                    <option value="user">user</option>
+                    <option value="admin">admin</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Noduri senzor</label>
+                  <input id="newUserSensorCount" class="input" type="number" value="2" />
+                </div>
+                <div class="field">
+                  <label>Noduri actuator</label>
+                  <input id="newUserActuatorCount" class="input" type="number" value="2" />
+                </div>
+                <div class="field" style="align-self:end;">
+                  <button class="button" id="addUserBtn" style="width:100%;">Adauga</button>
+                </div>
+              </div>
+              <div id="usersList" class="list" style="margin-top:18px;"></div>
+            </div>
+
+            <div class="card">
+              <div class="section-header"><h3>Configurare noduri</h3></div>
+              <div class="form-grid">
+                <div class="field">
+                  <label>Nod senzor</label>
+                  <select id="adminSensorNodeSelect" class="select"></select>
+                </div>
+                <div class="field">
+                  <label>Parametri</label>
+                  <div class="checks">
+                    <label><input type="checkbox" id="adminParamTemp" checked> temperatura</label>
+                    <label><input type="checkbox" id="adminParamSoil" checked> umiditate_sol</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Nod actuator</label>
+                  <select id="adminActuatorNodeSelect" class="select"></select>
+                </div>
+                <div class="field">
+                  <label>Numar iesiri</label>
+                  <input id="adminOutputCount" class="input" type="number" min="1" max="8" />
+                </div>
+              </div>
+              <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+                <button class="button" id="saveNodeConfigBtn">Salveaza</button>
+                <button class="button-outline" id="addSensorNodeBtn">Adauga nod senzor</button>
+                <button class="button-outline" id="addActuatorNodeBtn">Adauga nod actuator</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-setari" class="page">
           <div class="card">
-            <div class="section-header"><div><h3>Setari</h3></div></div>
-            <div class="list">
-              <div class="list-item"><span>Mod simplificat</span><span class="badge normal">Activ</span></div>
-              <div class="list-item"><span>Date demo</span><span class="badge neutral">Local</span></div>
+            <div class="section-header"><h3>Setari</h3></div>
+            <div class="form-grid">
+              <div class="field">
+                <label>Nume platforma</label>
+                <input id="platformName" class="input" value="Platforma IoT" />
+              </div>
+              <div class="field">
+                <label>Proiect</label>
+                <input id="projectName" class="input" value="Demo" />
+              </div>
+            </div>
+            <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+              <button class="button" id="saveSettingsBtn">Salveaza</button>
             </div>
           </div>
         </section>
@@ -463,289 +717,340 @@
 
   <script>
     const state = {
-      pagina: 'dashboard',
-      metricSelectat: ['temperatura', 'umiditateSol'],
-      praguri: {
+      currentRole: 'admin',
+      currentUser: 'Admin Demo',
+      currentPage: 'dashboard',
+      selectedNode: null,
+      monitorNodeId: 's1',
+      monitorMetrics: ['temperatura', 'umiditate_sol'],
+      thresholds: {
         temperatura: { warning: 30, critical: 35 },
-        umiditateSol: { warning: 35, critical: 25 }
+        umiditate_sol: { warning: 35, critical: 25 }
       },
-      senzori: [
-        { id: 1, nume: 'Senzor Temperatura Aer', tip: 'temperatura', locatie: 'Sera 1', status: 'online', valoare: 24.6, unitate: '°C' },
-        { id: 2, nume: 'Senzor Umiditate Sol', tip: 'umiditateSol', locatie: 'Parcela 1', status: 'online', valoare: 41, unitate: '%' }
+      users: [
+        { id: 1, name: 'Admin Demo', email: 'admin@demo.ro', role: 'admin', sensorNodes: 2, actuatorNodes: 2, active: true },
+        { id: 2, name: 'User Demo', email: 'user@demo.ro', role: 'user', sensorNodes: 2, actuatorNodes: 2, active: true }
       ],
-      actuatori: [
-        { id: 1, nume: 'Pompa irigare', status: false, mod: 'automat', start: '06:00', stop: '06:20' },
-        { id: 2, nume: 'Ventilator sera', status: false, mod: 'manual', start: '12:00', stop: '14:00' },
-        { id: 3, nume: 'Iluminare', status: false, mod: 'manual', start: '19:00', stop: '22:00' }
+      sensorNodes: [
+        {
+          id: 's1',
+          name: 'Nod senzor 1',
+          location: 'Sera 1',
+          status: 'online',
+          lastSeen: '-',
+          parameters: ['temperatura', 'umiditate_sol'],
+          current: { temperatura: 24.6, umiditate_sol: 41 },
+          history: { temperatura: [], umiditate_sol: [] }
+        },
+        {
+          id: 's2',
+          name: 'Nod senzor 2',
+          location: 'Parcela 1',
+          status: 'online',
+          lastSeen: '-',
+          parameters: ['temperatura', 'umiditate_sol'],
+          current: { temperatura: 26.1, umiditate_sol: 37 },
+          history: { temperatura: [], umiditate_sol: [] }
+        }
       ],
-      widgeturi: [
-        { key: 'temperaturaCard', label: 'Card temperatura aer', activ: true },
-        { key: 'umiditateCard', label: 'Card umiditate sol', activ: true },
-        { key: 'stareSenzori', label: 'Widget stare senzori', activ: true },
-        { key: 'alerte', label: 'Widget alerte', activ: true }
+      actuatorNodes: [
+        {
+          id: 'a1',
+          name: 'Nod actuator 1',
+          location: 'Sera 1',
+          status: 'online',
+          mode: 'manual',
+          outputs: [
+            { id: 'a1o1', label: 'Iesire 1', type: 'pompa', status: false, lastCommand: '-' },
+            { id: 'a1o2', label: 'Iesire 2', type: 'ventilator', status: false, lastCommand: '-' }
+          ]
+        },
+        {
+          id: 'a2',
+          name: 'Nod actuator 2',
+          location: 'Parcela 1',
+          status: 'online',
+          mode: 'automat',
+          outputs: [
+            { id: 'a2o1', label: 'Iesire 1', type: 'pompa', status: false, lastCommand: '-' },
+            { id: 'a2o2', label: 'Iesire 2', type: 'electrovalva', status: false, lastCommand: '-' },
+            { id: 'a2o3', label: 'Iesire 3', type: 'electrovalva', status: false, lastCommand: '-' },
+            { id: 'a2o4', label: 'Iesire 4', type: 'electrovalva', status: false, lastCommand: '-' },
+            { id: 'a2o5', label: 'Iesire 5', type: 'liber', status: false, lastCommand: '-' },
+            { id: 'a2o6', label: 'Iesire 6', type: 'liber', status: false, lastCommand: '-' },
+            { id: 'a2o7', label: 'Iesire 7', type: 'liber', status: false, lastCommand: '-' },
+            { id: 'a2o8', label: 'Iesire 8', type: 'liber', status: false, lastCommand: '-' }
+          ]
+        }
       ],
-      istoric: {
-        temperatura: [],
-        umiditateSol: []
-      },
-      alerte: []
+      alerts: [],
+      activity: [
+        { text: 'Sistem pornit', level: 'info', time: '-' }
+      ],
+      actuatorEvents: []
     };
 
-    const metaPagini = {
-      dashboard: 'Dashboard',
-      monitorizare: 'Monitorizare',
-      widgeturi: 'Dashboard',
-      senzori: 'Senzori',
-      actuatori: 'Actuatori',
-      alerte: 'Alerte',
-      setari: 'Setari'
+    const metricInfo = {
+      temperatura: { label: 'Temperatura aer', unit: '°C', icon: '🌡️', color: '#2563eb' },
+      umiditate_sol: { label: 'Umiditate sol', unit: '%', icon: '🌱', color: '#16a34a' }
     };
 
-    function toast(msg) {
-      const el = document.getElementById('toast');
-      el.textContent = msg;
-      el.classList.add('show');
-      clearTimeout(toast._t);
-      toast._t = setTimeout(() => el.classList.remove('show'), 2500);
+    const pageMeta = {
+      dashboard: ['Dashboard', 'Noduri senzor si noduri actuator'],
+      monitorizare: ['Monitorizare', 'Selectie multipla pe nod si parametri'],
+      alerte: ['Alerte', 'Praguri si stari active'],
+      administrare: ['Administrare', 'Utilizatori si configurare noduri'],
+      setari: ['Setari', 'Nume platforma si proiect'],
+      'node-detail': ['Detalii nod', 'Vizualizare nod']
+    };
+
+    function showToast(message) {
+      const t = document.getElementById('toast');
+      t.textContent = message;
+      t.classList.add('show');
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => t.classList.remove('show'), 2600);
     }
 
-    function formatData() {
+    function nowText() {
       return new Date().toLocaleString('ro-RO');
     }
 
-    function statusMetric(tip, valoare) {
-      const p = state.praguri[tip];
-      if (tip === 'umiditateSol') {
-        if (valoare <= p.critical) return 'critical';
-        if (valoare <= p.warning) return 'warning';
+    function addActivity(text, level = 'info') {
+      state.activity.unshift({ text, level, time: nowText() });
+      state.activity = state.activity.slice(0, 12);
+      renderActivity();
+    }
+
+    function setHeader(page) {
+      document.getElementById('pageTitle').textContent = pageMeta[page][0];
+      document.getElementById('pageSubtitle').textContent = pageMeta[page][1];
+    }
+
+    function openPage(page) {
+      state.currentPage = page;
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      document.querySelectorAll('.nav button').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
+      setHeader(page);
+      if (page === 'monitorizare') setTimeout(drawMainChart, 40);
+    }
+
+    function login() {
+      state.currentRole = document.getElementById('loginRole').value;
+      state.currentUser = state.currentRole === 'admin' ? 'Admin Demo' : 'User Demo';
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('appShell').classList.remove('hidden');
+      document.getElementById('sidebarRole').textContent = state.currentRole;
+      document.getElementById('sidebarUser').textContent = state.currentUser;
+      document.getElementById('adminMenuBtn').style.display = state.currentRole === 'admin' ? 'block' : 'none';
+      if (state.currentRole !== 'admin' && state.currentPage === 'administrare') openPage('dashboard');
+      addActivity('Autentificare ' + state.currentRole, 'info');
+      renderAll();
+    }
+
+    function initHistory() {
+      state.sensorNodes.forEach(node => {
+        node.history.temperatura = [];
+        node.history.umiditate_sol = [];
+        for (let i = 0; i < 18; i++) {
+          const tempBase = node.id === 's1' ? 24 : 26;
+          const soilBase = node.id === 's1' ? 41 : 37;
+          node.history.temperatura.push(+(tempBase + (Math.random() * 2.2 - 1)).toFixed(1));
+          node.history.umiditate_sol.push(Math.round(soilBase + (Math.random() * 8 - 4)));
+        }
+        node.lastSeen = nowText();
+      });
+    }
+
+    function getMetricState(metric, value) {
+      const tr = state.thresholds[metric];
+      if (metric === 'umiditate_sol') {
+        if (value <= tr.critical) return 'critical';
+        if (value <= tr.warning) return 'warning';
         return 'normal';
       }
-      if (valoare >= p.critical) return 'critical';
-      if (valoare >= p.warning) return 'warning';
+      if (value >= tr.critical) return 'critical';
+      if (value >= tr.warning) return 'warning';
       return 'normal';
     }
 
-    function etichetaStatus(status) {
-      return status === 'critical' ? 'critical' : status === 'warning' ? 'warning' : 'normal';
-    }
-
-    function getValoare(tip) {
-      return state.senzori.find(s => s.tip === tip)?.valoare || 0;
-    }
-
-    function renderDashboard() {
-      const box = document.getElementById('dashboardCards');
-      const cards = [];
-
-      if (state.widgeturi.find(w => w.key === 'temperaturaCard')?.activ) {
-        const v = getValoare('temperatura');
-        const st = statusMetric('temperatura', v);
-        cards.push(`
-          <div class="metric-card">
-            <div class="metric-top">
-              <div>
-                <div class="metric-label">Temperatura aer</div>
-                <div class="metric-value">${v.toFixed(1)} °C</div>
-              </div>
-              <div class="metric-icon">🌡️</div>
-            </div>
-            <div style="margin-top:12px;"><span class="badge ${st}">${etichetaStatus(st)}</span></div>
-          </div>
-        `);
-      }
-
-      if (state.widgeturi.find(w => w.key === 'umiditateCard')?.activ) {
-        const v = getValoare('umiditateSol');
-        const st = statusMetric('umiditateSol', v);
-        cards.push(`
-          <div class="metric-card">
-            <div class="metric-top">
-              <div>
-                <div class="metric-label">Umiditate sol</div>
-                <div class="metric-value">${v.toFixed(0)} %</div>
-              </div>
-              <div class="metric-icon">🌱</div>
-            </div>
-            <div style="margin-top:12px;"><span class="badge ${st}">${etichetaStatus(st)}</span></div>
-          </div>
-        `);
-      }
-
-      box.innerHTML = cards.join('') || '<div class="card">Gol</div>';
-
-      const stareBox = document.getElementById('stareSenzori');
-      const alerteBox = document.getElementById('alerteActiveDashboard');
-      const cardStare = state.widgeturi.find(w => w.key === 'stareSenzori')?.activ;
-      const cardAlerte = state.widgeturi.find(w => w.key === 'alerte')?.activ;
-
-      stareBox.innerHTML = cardStare ? state.senzori.map(s => `
-        <div class="list-item">
-          <span>${s.nume}</span>
-          <span class="badge ${s.status === 'online' ? 'normal' : 'neutral'}">${s.status}</span>
-        </div>
-      `).join('') : '<div class="list-item"><span>Ascuns</span></div>';
-
-      alerteBox.innerHTML = cardAlerte
-        ? (state.alerte.length
-            ? state.alerte.map(a => `
-                <div class="list-item">
-                  <div>
-                    <strong>${a.titlu}</strong>
-                    <div class="muted">${a.mesaj}</div>
-                  </div>
-                  <span class="badge ${a.nivel}">${a.nivel}</span>
-                </div>
-              `).join('')
-            : '<div class="list-item"><span>Fara alerte</span><span class="badge normal">ok</span></div>')
-        : '<div class="list-item"><span>Ascuns</span></div>';
-
-      document.getElementById('ultimaActualizare').textContent = formatData();
-    }
-
-    function renderWidgeturi() {
-      const box = document.getElementById('listaWidgeturi');
-      box.innerHTML = state.widgeturi.map(w => `
-        <div class="list-item">
-          <div><strong>${w.label}</strong></div>
-          <label class="switch">
-            <input type="checkbox" ${w.activ ? 'checked' : ''} onchange="toggleWidget('${w.key}', this.checked)">
-            <span class="slider"></span>
-          </label>
-        </div>
-      `).join('');
-    }
-
-    function toggleWidget(key, value) {
-      const w = state.widgeturi.find(x => x.key === key);
-      if (!w) return;
-      w.activ = value;
-      renderDashboard();
-      renderWidgeturi();
-      toast('Dashboard actualizat');
-    }
-
-    function renderSenzori() {
-      document.getElementById('tabelSenzori').innerHTML = state.senzori.map(s => `
-        <tr>
-          <td>${s.nume}</td>
-          <td>${s.tip === 'temperatura' ? 'Temperatura aer' : 'Umiditate sol'}</td>
-          <td>${s.locatie}</td>
-          <td><span class="badge ${s.status === 'online' ? 'normal' : 'neutral'}">${s.status}</span></td>
-          <td>${s.valoare} ${s.unitate}</td>
-        </tr>
-      `).join('');
-    }
-
-    function renderActuatori() {
-      const box = document.getElementById('listaActuatori');
-      box.innerHTML = state.actuatori.map(a => `
-        <div class="metric-card">
-          <div class="metric-top">
+    function renderSensorNodes() {
+      const box = document.getElementById('sensorNodeGrid');
+      box.innerHTML = state.sensorNodes.map(node => `
+        <div class="node-card" onclick="openNodeDetail('${node.id}', 'sensor')">
+          <div class="node-top">
             <div>
-              <div class="metric-label">${a.nume}</div>
-              <div class="metric-value" style="font-size:1.3rem;">${a.status ? 'Pornit' : 'Oprit'}</div>
+              <div class="node-title">${node.name}</div>
+              <div class="node-sub">${node.location}</div>
             </div>
-            <div class="metric-icon">${a.nume.includes('Pompa') ? '💧' : a.nume.includes('Ventilator') ? '🌀' : '💡'}</div>
+            <div class="icon-box">🛰️</div>
           </div>
-
-          <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
-            <span class="badge ${a.status ? 'normal' : 'neutral'}">${a.status ? 'activ' : 'inactiv'}</span>
-            <label class="switch">
-              <input type="checkbox" ${a.status ? 'checked' : ''} onchange="toggleActuator(${a.id}, this.checked)">
-              <span class="slider"></span>
-            </label>
+          <div class="mini-stats">
+            <div class="mini-row"><span>Status</span><span class="badge ${node.status === 'online' ? 'normal' : 'neutral'}">${node.status}</span></div>
+            ${node.parameters.includes('temperatura') ? `<div class="mini-row"><span>Temperatura</span><strong>${node.current.temperatura.toFixed(1)} °C</strong></div>` : ''}
+            ${node.parameters.includes('umiditate_sol') ? `<div class="mini-row"><span>Umiditate sol</span><strong>${node.current.umiditate_sol} %</strong></div>` : ''}
+            <div class="mini-row"><span>Update</span><span class="muted">${node.lastSeen.split(',')[1] || node.lastSeen}</span></div>
           </div>
+        </div>
+      `).join('');
+      document.getElementById('dashboardUpdate').textContent = nowText();
+    }
 
-          <div class="form-grid" style="margin-top:14px;">
-            <div class="field">
-              <label>Mod</label>
-              <select class="select" onchange="setModeActuator(${a.id}, this.value)">
-                <option value="manual" ${a.mod === 'manual' ? 'selected' : ''}>Manual</option>
-                <option value="automat" ${a.mod === 'automat' ? 'selected' : ''}>Automat</option>
-              </select>
+    function renderActuatorNodes() {
+      const box = document.getElementById('actuatorNodeGrid');
+      box.innerHTML = state.actuatorNodes.map(node => `
+        <div class="node-card" onclick="openNodeDetail('${node.id}', 'actuator')">
+          <div class="node-top">
+            <div>
+              <div class="node-title">${node.name}</div>
+              <div class="node-sub">${node.location}</div>
             </div>
-            <div></div>
-            <div class="field">
-              <label>Start</label>
-              <input class="input" type="time" value="${a.start}" onchange="setScheduleActuator(${a.id}, 'start', this.value)">
-            </div>
-            <div class="field">
-              <label>Stop</label>
-              <input class="input" type="time" value="${a.stop}" onchange="setScheduleActuator(${a.id}, 'stop', this.value)">
-            </div>
+            <div class="icon-box">🎛️</div>
+          </div>
+          <div class="mini-stats">
+            <div class="mini-row"><span>Status</span><span class="badge ${node.status === 'online' ? 'normal' : 'neutral'}">${node.status}</span></div>
+            <div class="mini-row"><span>Mod</span><span class="badge info">${node.mode}</span></div>
+            <div class="mini-row"><span>Iesiri</span><strong>${node.outputs.length}</strong></div>
+            <div class="mini-row"><span>Active</span><strong>${node.outputs.filter(o => o.status).length}</strong></div>
           </div>
         </div>
       `).join('');
     }
 
-    function toggleActuator(id, value) {
-      const a = state.actuatori.find(x => x.id === id);
-      if (!a) return;
-      a.status = value;
-      renderActuatori();
-      toast(`${a.nume} ${value ? 'pornit' : 'oprit'}`);
-    }
-
-    function setModeActuator(id, value) {
-      const a = state.actuatori.find(x => x.id === id);
-      if (!a) return;
-      a.mod = value;
-      toast(`${a.nume} ${value}`);
-    }
-
-    function setScheduleActuator(id, field, value) {
-      const a = state.actuatori.find(x => x.id === id);
-      if (!a) return;
-      a[field] = value;
-      toast(`${a.nume} actualizat`);
-    }
-
-    function evalueazaAlerte() {
-      const alerte = [];
-      const temp = getValoare('temperatura');
-      const soil = getValoare('umiditateSol');
-
-      const stTemp = statusMetric('temperatura', temp);
-      const stSoil = statusMetric('umiditateSol', soil);
-
-      if (stTemp !== 'normal') {
-        alerte.push({ titlu: 'Temperatura', mesaj: `${temp.toFixed(1)} °C`, nivel: stTemp });
-      }
-      if (stSoil !== 'normal') {
-        alerte.push({ titlu: 'Umiditate sol', mesaj: `${soil.toFixed(0)} %`, nivel: stSoil });
-      }
-
-      state.alerte = alerte;
-      renderAlerte();
-      renderDashboard();
-    }
-
-    function renderAlerte() {
-      const box = document.getElementById('listaAlerte');
-      if (!state.alerte.length) {
-        box.innerHTML = '<div class="list-item"><span>Fara alerte</span><span class="badge normal">ok</span></div>';
-        return;
-      }
-      box.innerHTML = state.alerte.map(a => `
+    function renderActivity() {
+      const box = document.getElementById('activityLog');
+      box.innerHTML = state.activity.map(item => `
         <div class="list-item">
           <div>
-            <strong>${a.titlu}</strong>
-            <div class="muted">${a.mesaj}</div>
+            <strong>${item.text}</strong>
+            <div class="muted">${item.time}</div>
           </div>
-          <span class="badge ${a.nivel}">${a.nivel}</span>
+          <span class="badge ${item.level === 'warning' ? 'warning' : item.level === 'critical' ? 'critical' : 'info'}">${item.level}</span>
         </div>
       `).join('');
     }
 
-    function initIstoric() {
-      for (let i = 0; i < 18; i++) {
-        state.istoric.temperatura.push(22 + Math.random() * 5);
-        state.istoric.umiditateSol.push(34 + Math.random() * 12);
+    function renderAlerts() {
+      const box1 = document.getElementById('dashboardAlerts');
+      const box2 = document.getElementById('alertsList');
+      const html = state.alerts.length ? state.alerts.map(alert => `
+        <div class="list-item">
+          <div>
+            <strong>${alert.title}</strong>
+            <div class="muted">${alert.message}</div>
+          </div>
+          <span class="badge ${alert.level}">${alert.level}</span>
+        </div>
+      `).join('') : '<div class="list-item"><span>Fara alerte</span><span class="badge normal">ok</span></div>';
+      box1.innerHTML = html;
+      box2.innerHTML = html;
+    }
+
+    function openNodeDetail(id, type) {
+      state.selectedNode = { id, type };
+      const wrapper = document.getElementById('nodeDetailContent');
+      if (type === 'sensor') {
+        const node = state.sensorNodes.find(n => n.id === id);
+        document.getElementById('detailTitle').textContent = node.name;
+        wrapper.innerHTML = `
+          <div class="grid detail-grid">
+            <div class="card">
+              <div class="section-header"><h3>Info</h3></div>
+              <div class="list">
+                <div class="list-item"><span>Nume</span><strong>${node.name}</strong></div>
+                <div class="list-item"><span>Locatie</span><strong>${node.location}</strong></div>
+                <div class="list-item"><span>Status</span><span class="badge ${node.status === 'online' ? 'normal' : 'neutral'}">${node.status}</span></div>
+                <div class="list-item"><span>Update</span><strong>${node.lastSeen}</strong></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="section-header"><h3>Parametri</h3></div>
+              <div class="list">
+                ${node.parameters.map(param => `
+                  <div class="list-item">
+                    <span>${metricInfo[param].label}</span>
+                    <strong>${node.current[param]} ${metricInfo[param].unit}</strong>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:20px;">
+            <div class="section-header"><h3>Grafic</h3></div>
+            <div class="chart-wrap"><canvas id="detailChart"></canvas></div>
+          </div>
+        `;
+        openPage('node-detail');
+        setTimeout(() => drawDetailChart(node), 40);
+      } else {
+        const node = state.actuatorNodes.find(n => n.id === id);
+        document.getElementById('detailTitle').textContent = node.name;
+        wrapper.innerHTML = `
+          <div class="grid detail-grid">
+            <div class="card">
+              <div class="section-header"><h3>Info</h3></div>
+              <div class="list">
+                <div class="list-item"><span>Nume</span><strong>${node.name}</strong></div>
+                <div class="list-item"><span>Locatie</span><strong>${node.location}</strong></div>
+                <div class="list-item"><span>Status</span><span class="badge ${node.status === 'online' ? 'normal' : 'neutral'}">${node.status}</span></div>
+              </div>
+              <div style="margin-top:16px;">
+                <label style="display:block; margin-bottom:8px; font-weight:700;">Mod</label>
+                <div class="segmented">
+                  <button class="${node.mode === 'manual' ? 'active' : ''}" onclick="setActuatorMode('${node.id}','manual')">Manual</button>
+                  <button class="${node.mode === 'automat' ? 'active' : ''}" onclick="setActuatorMode('${node.id}','automat')">Auto</button>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="section-header"><h3>Iesiri</h3></div>
+              <div class="list">
+                ${node.outputs.map(output => `
+                  <div class="list-item">
+                    <div>
+                      <strong>${output.label}</strong>
+                      <div class="muted">${output.type}</div>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                      <span class="badge ${output.status ? 'normal' : 'neutral'}">${output.status ? 'on' : 'off'}</span>
+                      <label class="switch">
+                        <input type="checkbox" ${output.status ? 'checked' : ''} ${node.mode === 'automat' ? 'disabled' : ''} onchange="toggleOutput('${node.id}','${output.id}', this.checked)">
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:20px;">
+            <div class="section-header"><h3>Comenzi</h3></div>
+            <div id="detailActuatorEvents" class="list"></div>
+          </div>
+        `;
+        openPage('node-detail');
+        renderActuatorEvents('detailActuatorEvents', node.id);
       }
     }
 
-    function drawChart() {
-      const canvas = document.getElementById('chart');
+    function renderActuatorEvents(targetId = 'actuatorEventsBox', actuatorNodeId = null) {
+      const box = document.getElementById(targetId);
+      const events = actuatorNodeId ? state.actuatorEvents.filter(e => e.nodeId === actuatorNodeId) : state.actuatorEvents;
+      box.innerHTML = events.length ? events.slice(0, 10).map(e => `
+        <div class="list-item">
+          <div>
+            <strong>${e.text}</strong>
+            <div class="muted">${e.time}</div>
+          </div>
+          <span class="badge info">cmd</span>
+        </div>
+      `).join('') : '<div class="list-item"><span>Fara comenzi</span><span class="badge neutral">-</span></div>';
+    }
+
+    function drawGenericChart(canvasId, series) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
@@ -754,19 +1059,13 @@
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, rect.width, rect.height);
 
-      const selected = state.metricSelectat.length ? state.metricSelectat : ['temperatura'];
-      const seriesMap = {
-        temperatura: { values: state.istoric.temperatura.map(v => Number(v.toFixed(1))), color: '#2563eb' },
-        umiditateSol: { values: state.istoric.umiditateSol.map(v => Number(v.toFixed(1))), color: '#16a34a' }
-      };
-
-      const allValues = selected.flatMap(key => seriesMap[key].values);
       const padding = { top: 20, right: 18, bottom: 34, left: 42 };
       const width = rect.width - padding.left - padding.right;
       const height = rect.height - padding.top - padding.bottom;
+      const allValues = series.flatMap(s => s.values);
       const max = Math.max(...allValues) * 1.15;
       const min = Math.min(...allValues) * 0.85;
-      const length = seriesMap[selected[0]].values.length;
+      const length = series[0]?.values.length || 0;
       const stepX = width / Math.max(length - 1, 1);
 
       ctx.strokeStyle = '#dbe6f2';
@@ -788,101 +1087,311 @@
         ctx.fillText(String(i + 1), x - 4, rect.height - 10);
       }
 
-      selected.forEach(key => {
-        const { values, color } = seriesMap[key];
+      series.forEach(line => {
         ctx.beginPath();
-        values.forEach((value, i) => {
+        line.values.forEach((value, i) => {
           const x = padding.left + i * stepX;
           const y = padding.top + height - ((value - min) / (max - min || 1)) * height;
           if (i === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         });
-        ctx.strokeStyle = color;
+        ctx.strokeStyle = line.color;
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        values.forEach((value, i) => {
+        line.values.forEach((value, i) => {
           const x = padding.left + i * stepX;
           const y = padding.top + height - ((value - min) / (max - min || 1)) * height;
           ctx.beginPath();
           ctx.arc(x, y, 3.5, 0, Math.PI * 2);
-          ctx.fillStyle = color;
+          ctx.fillStyle = line.color;
           ctx.fill();
         });
       });
     }
 
-    function updateLiveData() {
-      const tempSensor = state.senzori.find(s => s.tip === 'temperatura');
-      const soilSensor = state.senzori.find(s => s.tip === 'umiditateSol');
-
-      tempSensor.valoare = +(tempSensor.valoare + (Math.random() - 0.45) * 0.8).toFixed(1);
-      soilSensor.valoare = Math.max(0, +(soilSensor.valoare + (Math.random() - 0.6) * 2).toFixed(0));
-
-      state.istoric.temperatura.shift();
-      state.istoric.umiditateSol.shift();
-      state.istoric.temperatura.push(tempSensor.valoare);
-      state.istoric.umiditateSol.push(soilSensor.valoare);
-
-      renderSenzori();
-      evalueazaAlerte();
-      drawChart();
+    function drawDetailChart(node) {
+      const series = node.parameters.map(param => ({
+        values: node.history[param],
+        color: metricInfo[param].color
+      }));
+      drawGenericChart('detailChart', series);
     }
 
-    function schimbaPagina(pagina) {
-      state.pagina = pagina;
-      document.querySelectorAll('.nav button').forEach(btn => btn.classList.toggle('active', btn.dataset.page === pagina));
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('pagina-' + pagina).classList.add('active');
-      document.getElementById('titluPagina').textContent = metaPagini[pagina];
-      if (pagina === 'monitorizare') setTimeout(drawChart, 30);
-    }
-
-    function initEvents() {
-      document.querySelectorAll('.nav button').forEach(btn => {
-        btn.addEventListener('click', () => schimbaPagina(btn.dataset.page));
-      });
-
-      document.querySelectorAll('.metric-check').forEach(check => {
-        check.addEventListener('change', () => {
-          state.metricSelectat = Array.from(document.querySelectorAll('.metric-check:checked')).map(x => x.value);
-          drawChart();
+    function renderMonitorControls() {
+      const nodeSelect = document.getElementById('monitorNodeSelect');
+      nodeSelect.innerHTML = state.sensorNodes.map(node => `<option value="${node.id}">${node.name}</option>`).join('');
+      nodeSelect.value = state.monitorNodeId;
+      const node = state.sensorNodes.find(n => n.id === state.monitorNodeId) || state.sensorNodes[0];
+      const checkBox = document.getElementById('monitorChecks');
+      checkBox.innerHTML = node.parameters.map(param => `
+        <label><input type="checkbox" class="monitor-check" value="${param}" ${state.monitorMetrics.includes(param) ? 'checked' : ''}> ${metricInfo[param].label}</label>
+      `).join('');
+      document.querySelectorAll('.monitor-check').forEach(ch => {
+        ch.addEventListener('change', () => {
+          state.monitorMetrics = Array.from(document.querySelectorAll('.monitor-check:checked')).map(x => x.value);
+          drawMainChart();
+          renderMonitorStats();
         });
       });
-
-      document.getElementById('btnLive').addEventListener('click', () => {
-        drawChart();
-        toast('Grafic actualizat');
-      });
-
-      document.getElementById('salveazaPraguri').addEventListener('click', () => {
-        state.praguri.temperatura.warning = Number(document.getElementById('tempWarn').value);
-        state.praguri.temperatura.critical = Number(document.getElementById('tempCrit').value);
-        state.praguri.umiditateSol.warning = Number(document.getElementById('soilWarn').value);
-        state.praguri.umiditateSol.critical = Number(document.getElementById('soilCrit').value);
-        evalueazaAlerte();
-        toast('Praguri salvate');
-      });
-
-      window.addEventListener('resize', () => {
-        if (state.pagina === 'monitorizare') drawChart();
-      });
     }
 
-    function init() {
-      initIstoric();
-      renderWidgeturi();
-      renderSenzori();
-      renderActuatori();
-      evalueazaAlerte();
-      renderDashboard();
-      initEvents();
-      document.getElementById('ultimaActualizare').textContent = formatData();
-      setTimeout(drawChart, 30);
-      setInterval(updateLiveData, 10000);
+    function drawMainChart() {
+      const node = state.sensorNodes.find(n => n.id === state.monitorNodeId) || state.sensorNodes[0];
+      const metrics = state.monitorMetrics.length ? state.monitorMetrics : [node.parameters[0]];
+      const series = metrics.map(param => ({ values: node.history[param], color: metricInfo[param].color }));
+      drawGenericChart('mainChart', series);
+      renderMonitorStats();
     }
 
-    init();
+    function renderMonitorStats() {
+      const node = state.sensorNodes.find(n => n.id === state.monitorNodeId) || state.sensorNodes[0];
+      const box = document.getElementById('monitorStats');
+      const metrics = state.monitorMetrics.length ? state.monitorMetrics : [node.parameters[0]];
+      box.innerHTML = metrics.map(param => `
+        <div class="list-item">
+          <span>${metricInfo[param].label}</span>
+          <strong>${node.current[param]} ${metricInfo[param].unit}</strong>
+        </div>
+      `).join('');
+    }
+
+    function renderUsers() {
+      const box = document.getElementById('usersList');
+      box.innerHTML = state.users.map(user => `
+        <div class="list-item">
+          <div>
+            <strong>${user.name}</strong>
+            <div class="muted">${user.email} · ${user.role}</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span class="badge ${user.active ? 'normal' : 'neutral'}">${user.active ? 'activ' : 'inactiv'}</span>
+            <button class="button-outline" onclick="toggleUser(${user.id})">${user.active ? 'Dezactiveaza' : 'Activeaza'}</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminControls() {
+      document.getElementById('adminSensorNodeSelect').innerHTML = state.sensorNodes.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
+      document.getElementById('adminActuatorNodeSelect').innerHTML = state.actuatorNodes.map(n => `<option value="${n.id}">${n.name}</option>`).join('');
+      const selectedActuator = state.actuatorNodes[0];
+      if (selectedActuator) document.getElementById('adminOutputCount').value = selectedActuator.outputs.length;
+      renderUsers();
+    }
+
+    function updateThresholds() {
+      state.thresholds.temperatura.warning = Number(document.getElementById('tempWarn').value);
+      state.thresholds.temperatura.critical = Number(document.getElementById('tempCrit').value);
+      state.thresholds.umiditate_sol.warning = Number(document.getElementById('soilWarn').value);
+      state.thresholds.umiditate_sol.critical = Number(document.getElementById('soilCrit').value);
+      evaluateAlerts();
+      showToast('Praguri salvate');
+    }
+
+    function evaluateAlerts() {
+      const alerts = [];
+      state.sensorNodes.forEach(node => {
+        node.parameters.forEach(param => {
+          const val = node.current[param];
+          const status = getMetricState(param, val);
+          if (status !== 'normal') {
+            alerts.push({
+              title: node.name + ' · ' + metricInfo[param].label,
+              message: val + ' ' + metricInfo[param].unit,
+              level: status
+            });
+          }
+        });
+      });
+      state.alerts = alerts;
+      renderAlerts();
+    }
+
+    function toggleOutput(nodeId, outputId, checked) {
+      const node = state.actuatorNodes.find(n => n.id === nodeId);
+      if (!node || node.mode === 'automat') return;
+      const output = node.outputs.find(o => o.id === outputId);
+      output.status = checked;
+      output.lastCommand = nowText();
+      const text = node.name + ' · ' + output.label + ' ' + (checked ? 'pornit' : 'oprit');
+      state.actuatorEvents.unshift({ nodeId, text, time: nowText() });
+      state.actuatorEvents = state.actuatorEvents.slice(0, 20);
+      addActivity(text, 'info');
+      renderActuatorNodes();
+      if (state.selectedNode?.id === nodeId) openNodeDetail(nodeId, 'actuator');
+      renderActuatorEvents();
+      showToast(text);
+    }
+
+    function setActuatorMode(nodeId, mode) {
+      const node = state.actuatorNodes.find(n => n.id === nodeId);
+      node.mode = mode;
+      addActivity(node.name + ' mod ' + mode, 'info');
+      renderActuatorNodes();
+      openNodeDetail(nodeId, 'actuator');
+      showToast(node.name + ' ' + mode);
+    }
+
+    function randomizeData() {
+      state.sensorNodes.forEach(node => {
+        if (node.parameters.includes('temperatura')) {
+          node.current.temperatura = +(node.current.temperatura + (Math.random() - 0.45) * 0.8).toFixed(1);
+          node.history.temperatura.shift();
+          node.history.temperatura.push(node.current.temperatura);
+        }
+        if (node.parameters.includes('umiditate_sol')) {
+          node.current.umiditate_sol = Math.max(0, Math.round(node.current.umiditate_sol + (Math.random() - 0.58) * 2));
+          node.history.umiditate_sol.shift();
+          node.history.umiditate_sol.push(node.current.umiditate_sol);
+        }
+        node.lastSeen = nowText();
+      });
+      document.getElementById('sidebarTime').textContent = nowText();
+      evaluateAlerts();
+      renderSensorNodes();
+      renderMonitorStats();
+      if (state.currentPage === 'monitorizare') drawMainChart();
+      if (state.currentPage === 'node-detail' && state.selectedNode?.type === 'sensor') {
+        const node = state.sensorNodes.find(n => n.id === state.selectedNode.id);
+        drawDetailChart(node);
+      }
+    }
+
+    function toggleUser(id) {
+      const user = state.users.find(u => u.id === id);
+      user.active = !user.active;
+      renderUsers();
+      showToast(user.name + ' ' + (user.active ? 'activ' : 'inactiv'));
+    }
+
+    function addUser() {
+      const name = document.getElementById('newUserName').value.trim();
+      const email = document.getElementById('newUserEmail').value.trim();
+      const role = document.getElementById('newUserRole').value;
+      const sensorNodes = Number(document.getElementById('newUserSensorCount').value);
+      const actuatorNodes = Number(document.getElementById('newUserActuatorCount').value);
+      if (!name || !email) {
+        showToast('Completeaza nume si email');
+        return;
+      }
+      state.users.unshift({ id: Date.now(), name, email, role, sensorNodes, actuatorNodes, active: true });
+      renderUsers();
+      document.getElementById('newUserName').value = '';
+      document.getElementById('newUserEmail').value = '';
+      showToast('Utilizator adaugat');
+    }
+
+    function saveNodeConfig() {
+      const sensorNodeId = document.getElementById('adminSensorNodeSelect').value;
+      const actuatorNodeId = document.getElementById('adminActuatorNodeSelect').value;
+      const sensorNode = state.sensorNodes.find(n => n.id === sensorNodeId);
+      const actuatorNode = state.actuatorNodes.find(n => n.id === actuatorNodeId);
+      const params = [];
+      if (document.getElementById('adminParamTemp').checked) params.push('temperatura');
+      if (document.getElementById('adminParamSoil').checked) params.push('umiditate_sol');
+      sensorNode.parameters = params.length ? params : ['temperatura'];
+      const count = Math.max(1, Math.min(8, Number(document.getElementById('adminOutputCount').value)));
+      while (actuatorNode.outputs.length < count) {
+        const idx = actuatorNode.outputs.length + 1;
+        actuatorNode.outputs.push({ id: actuatorNode.id + 'o' + idx, label: 'Iesire ' + idx, type: 'liber', status: false, lastCommand: '-' });
+      }
+      actuatorNode.outputs = actuatorNode.outputs.slice(0, count);
+      renderAll();
+      showToast('Configurare salvata');
+    }
+
+    function addSensorNode() {
+      const idx = state.sensorNodes.length + 1;
+      state.sensorNodes.push({
+        id: 's' + idx,
+        name: 'Nod senzor ' + idx,
+        location: 'Locatie ' + idx,
+        status: 'online',
+        lastSeen: nowText(),
+        parameters: ['temperatura', 'umiditate_sol'],
+        current: { temperatura: 24 + idx, umiditate_sol: 40 },
+        history: { temperatura: [], umiditate_sol: [] }
+      });
+      initHistory();
+      renderAll();
+      showToast('Nod senzor adaugat');
+    }
+
+    function addActuatorNode() {
+      const idx = state.actuatorNodes.length + 1;
+      state.actuatorNodes.push({
+        id: 'a' + idx,
+        name: 'Nod actuator ' + idx,
+        location: 'Locatie ' + idx,
+        status: 'online',
+        mode: 'manual',
+        outputs: [
+          { id: 'a' + idx + 'o1', label: 'Iesire 1', type: 'liber', status: false, lastCommand: '-' },
+          { id: 'a' + idx + 'o2', label: 'Iesire 2', type: 'liber', status: false, lastCommand: '-' }
+        ]
+      });
+      renderAll();
+      showToast('Nod actuator adaugat');
+    }
+
+    function saveSettings() {
+      document.getElementById('brandTitle').textContent = document.getElementById('platformName').value || 'Platforma IoT';
+      document.getElementById('brandSubtitle').textContent = document.getElementById('projectName').value || 'Demo';
+      showToast('Setari salvate');
+    }
+
+    function renderAll() {
+      renderSensorNodes();
+      renderActuatorNodes();
+      renderActivity();
+      renderAlerts();
+      renderMonitorControls();
+      renderActuatorEvents();
+      renderAdminControls();
+      renderMonitorStats();
+      document.getElementById('sidebarTime').textContent = nowText();
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', login);
+    document.querySelectorAll('.nav button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.page === 'administrare' && state.currentRole !== 'admin') return;
+        openPage(btn.dataset.page);
+      });
+    });
+    document.getElementById('monitorNodeSelect').addEventListener('change', e => {
+      state.monitorNodeId = e.target.value;
+      state.monitorMetrics = [...(state.sensorNodes.find(n => n.id === state.monitorNodeId)?.parameters || ['temperatura'])];
+      renderMonitorControls();
+      drawMainChart();
+    });
+    document.getElementById('refreshChartBtn').addEventListener('click', () => {
+      drawMainChart();
+      showToast('Grafic actualizat');
+    });
+    document.getElementById('saveThresholdsBtn').addEventListener('click', updateThresholds);
+    document.getElementById('addUserBtn').addEventListener('click', addUser);
+    document.getElementById('saveNodeConfigBtn').addEventListener('click', saveNodeConfig);
+    document.getElementById('addSensorNodeBtn').addEventListener('click', addSensorNode);
+    document.getElementById('addActuatorNodeBtn').addEventListener('click', addActuatorNode);
+    document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+    document.getElementById('adminActuatorNodeSelect').addEventListener('change', e => {
+      const node = state.actuatorNodes.find(n => n.id === e.target.value);
+      if (node) document.getElementById('adminOutputCount').value = node.outputs.length;
+    });
+    window.addEventListener('resize', () => {
+      if (state.currentPage === 'monitorizare') drawMainChart();
+      if (state.currentPage === 'node-detail' && state.selectedNode?.type === 'sensor') {
+        const node = state.sensorNodes.find(n => n.id === state.selectedNode.id);
+        if (node) drawDetailChart(node);
+      }
+    });
+
+    initHistory();
+    evaluateAlerts();
+    renderAll();
+    setInterval(randomizeData, 10000);
   </script>
 </body>
 </html>
