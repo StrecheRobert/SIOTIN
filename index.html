@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Platforma IoT</title>
+  <title>SIOTIN</title>
   <style>
     :root {
       --bg: #f4f7fb;
@@ -462,7 +462,7 @@
       <div class="brand">
         <div class="brand-logo">IoT</div>
         <div>
-          <h1>Platforma IoT</h1>
+          <h1>SIOTIN</h1>
           <p>Acces</p>
         </div>
       </div>
@@ -475,7 +475,7 @@
       </div>
       <div class="field">
         <label>Email</label>
-        <input id="loginEmail" class="input" value="admin@demo.ro" />
+        <input id="loginEmail" class="input" value="admin@siotin.ro" />
       </div>
       <div class="field">
         <label>Parola</label>
@@ -492,8 +492,8 @@
       <div class="brand">
         <div class="brand-logo">IoT</div>
         <div>
-          <h1 id="brandTitle">Platforma IoT</h1>
-          <p id="brandSubtitle">demo</p>
+          <h1 id="brandTitle">SIOTIN</h1>
+          <p id="brandSubtitle">platforma</p>
         </div>
       </div>
 
@@ -697,11 +697,11 @@
             <div class="form-grid">
               <div class="field">
                 <label>Nume platforma</label>
-                <input id="platformName" class="input" value="Platforma IoT" />
+                <input id="platformName" class="input" value="SIOTIN" />
               </div>
               <div class="field">
                 <label>Proiect</label>
-                <input id="projectName" class="input" value="Demo" />
+                <input id="projectName" class="input" value="SIOTIN" />
               </div>
             </div>
             <div style="margin-top:14px; display:flex; justify-content:flex-end;">
@@ -728,8 +728,8 @@
         umiditate_sol: { warning: 35, critical: 25 }
       },
       users: [
-        { id: 1, name: 'Admin Demo', email: 'admin@demo.ro', role: 'admin', sensorNodes: 2, actuatorNodes: 2, active: true },
-        { id: 2, name: 'User Demo', email: 'user@demo.ro', role: 'user', sensorNodes: 2, actuatorNodes: 2, active: true }
+        { id: 1, name: 'Admin', email: 'admin@siotin.ro', role: 'admin', sensorNodes: 2, actuatorNodes: 2, active: true },
+        { id: 2, name: 'User', email: 'user@siotin.ro', role: 'user', sensorNodes: 2, actuatorNodes: 2, active: true }
       ],
       sensorNodes: [
         {
@@ -761,8 +761,8 @@
           status: 'online',
           mode: 'manual',
           outputs: [
-            { id: 'a1o1', label: 'Iesire 1', type: 'pompa', status: false, lastCommand: '-' },
-            { id: 'a1o2', label: 'Iesire 2', type: 'ventilator', status: false, lastCommand: '-' }
+            { id: 'a1o1', label: 'Iesire 1', type: 'pompa', status: false, lastCommand: '-', autoEnabled: false, autoStart: '06:00', autoStop: '06:15', repeatMode: 'zilnic' },
+            { id: 'a1o2', label: 'Iesire 2', type: 'ventilator', status: false, lastCommand: '-', autoEnabled: false, autoStart: '12:00', autoStop: '12:15', repeatMode: 'la_ora' }
           ]
         },
         {
@@ -772,14 +772,14 @@
           status: 'online',
           mode: 'automat',
           outputs: [
-            { id: 'a2o1', label: 'Iesire 1', type: 'pompa', status: false, lastCommand: '-' },
-            { id: 'a2o2', label: 'Iesire 2', type: 'electrovalva', status: false, lastCommand: '-' },
-            { id: 'a2o3', label: 'Iesire 3', type: 'electrovalva', status: false, lastCommand: '-' },
-            { id: 'a2o4', label: 'Iesire 4', type: 'electrovalva', status: false, lastCommand: '-' },
-            { id: 'a2o5', label: 'Iesire 5', type: 'liber', status: false, lastCommand: '-' },
-            { id: 'a2o6', label: 'Iesire 6', type: 'liber', status: false, lastCommand: '-' },
-            { id: 'a2o7', label: 'Iesire 7', type: 'liber', status: false, lastCommand: '-' },
-            { id: 'a2o8', label: 'Iesire 8', type: 'liber', status: false, lastCommand: '-' }
+            { id: 'a2o1', label: 'Iesire 1', type: 'pompa', status: false, lastCommand: '-', autoEnabled: false, autoStart: '06:00', autoStop: '06:20', repeatMode: 'zilnic' },
+            { id: 'a2o2', label: 'Iesire 2', type: 'electrovalva', status: false, lastCommand: '-', autoEnabled: false, autoStart: '07:00', autoStop: '07:15', repeatMode: 'la_ora' },
+            { id: 'a2o3', label: 'Iesire 3', type: 'electrovalva', status: false, lastCommand: '-', autoEnabled: false, autoStart: '08:00', autoStop: '08:10', repeatMode: 'zilnic' },
+            { id: 'a2o4', label: 'Iesire 4', type: 'electrovalva', status: false, lastCommand: '-', autoEnabled: false, autoStart: '09:00', autoStop: '09:10', repeatMode: 'la_ora' },
+            { id: 'a2o5', label: 'Iesire 5', type: 'liber', status: false, lastCommand: '-', autoEnabled: false, autoStart: '10:00', autoStop: '10:10', repeatMode: 'zilnic' },
+            { id: 'a2o6', label: 'Iesire 6', type: 'liber', status: false, lastCommand: '-', autoEnabled: false, autoStart: '11:00', autoStop: '11:10', repeatMode: 'la_ora' },
+            { id: 'a2o7', label: 'Iesire 7', type: 'liber', status: false, lastCommand: '-', autoEnabled: false, autoStart: '12:00', autoStop: '12:10', repeatMode: 'zilnic' },
+            { id: 'a2o8', label: 'Iesire 8', type: 'liber', status: false, lastCommand: '-', autoEnabled: false, autoStart: '13:00', autoStop: '13:10', repeatMode: 'la_ora' }
           ]
         }
       ],
@@ -838,7 +838,7 @@
 
     function login() {
       state.currentRole = document.getElementById('loginRole').value;
-      state.currentUser = state.currentRole === 'admin' ? 'Admin Demo' : 'User Demo';
+      state.currentUser = state.currentRole === 'admin' ? 'Admin' : 'User';
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('appShell').classList.remove('hidden');
       document.getElementById('sidebarRole').textContent = state.currentRole;
@@ -1028,9 +1028,14 @@
             <div class="section-header"><h3>Comenzi</h3></div>
             <div id="detailActuatorEvents" class="list"></div>
           </div>
+          <div class="card" style="margin-top:20px;">
+            <div class="section-header"><h3>Program automat</h3></div>
+            <div id="detailAutoSchedule"></div>
+          </div>
         `;
         openPage('node-detail');
         renderActuatorEvents('detailActuatorEvents', node.id);
+        renderAutoSchedule(node);
       }
     }
 
@@ -1233,6 +1238,81 @@
       showToast(node.name + ' ' + mode);
     }
 
+    function renderAutoSchedule(node) {
+      const box = document.getElementById('detailAutoSchedule');
+      if (!box) return;
+      if (node.mode !== 'automat') {
+        box.innerHTML = '<div class="list-item"><span>Activeaza modul Auto pentru configurare</span><span class="badge neutral">manual</span></div>';
+        return;
+      }
+      box.innerHTML = '<div class="list">' + node.outputs.map(output => `
+        <div class="card" style="padding:14px; box-shadow:none; margin-bottom:12px;">
+          <div class="section-header" style="margin-bottom:10px;"><h3 style="font-size:0.98rem;">${output.label} · ${output.type}</h3></div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Activ</label>
+              <label class="switch">
+                <input type="checkbox" ${output.autoEnabled ? 'checked' : ''} onchange="setOutputAutoEnabled('${node.id}','${output.id}', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="field">
+              <label>Proces</label>
+              <input class="input" value="${output.type}" onchange="setOutputType('${node.id}','${output.id}', this.value)">
+            </div>
+            <div class="field">
+              <label>Start</label>
+              <input class="input" type="time" value="${output.autoStart}" onchange="setOutputSchedule('${node.id}','${output.id}','autoStart', this.value)">
+            </div>
+            <div class="field">
+              <label>Stop</label>
+              <input class="input" type="time" value="${output.autoStop}" onchange="setOutputSchedule('${node.id}','${output.id}','autoStop', this.value)">
+            </div>
+            <div class="field">
+              <label>Repetare</label>
+              <select class="select" onchange="setOutputRepeat('${node.id}','${output.id}', this.value)">
+                <option value="zilnic" ${output.repeatMode === 'zilnic' ? 'selected' : ''}>zilnic</option>
+                <option value="la_ora" ${output.repeatMode === 'la_ora' ? 'selected' : ''}>din ora in ora</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      `).join('') + '</div>';
+    }
+
+    function setOutputAutoEnabled(nodeId, outputId, checked) {
+      const node = state.actuatorNodes.find(n => n.id === nodeId);
+      const output = node.outputs.find(o => o.id === outputId);
+      output.autoEnabled = checked;
+      addActivity(node.name + ' · ' + output.label + ' auto ' + (checked ? 'activ' : 'inactiv'), 'info');
+      renderAutoSchedule(node);
+      showToast(output.label + ' auto ' + (checked ? 'activ' : 'inactiv'));
+    }
+
+    function setOutputSchedule(nodeId, outputId, field, value) {
+      const node = state.actuatorNodes.find(n => n.id === nodeId);
+      const output = node.outputs.find(o => o.id === outputId);
+      output[field] = value;
+      addActivity(node.name + ' · ' + output.label + ' program actualizat', 'info');
+      showToast(output.label + ' program actualizat');
+    }
+
+    function setOutputRepeat(nodeId, outputId, value) {
+      const node = state.actuatorNodes.find(n => n.id === nodeId);
+      const output = node.outputs.find(o => o.id === outputId);
+      output.repeatMode = value;
+      addActivity(node.name + ' · ' + output.label + ' repetare ' + value, 'info');
+      showToast(output.label + ' ' + value);
+    }
+
+    function setOutputType(nodeId, outputId, value) {
+      const node = state.actuatorNodes.find(n => n.id === nodeId);
+      const output = node.outputs.find(o => o.id === outputId);
+      output.type = value;
+      addActivity(node.name + ' · ' + output.label + ' proces ' + value, 'info');
+      showToast(output.label + ' proces actualizat');
+    }
+
     function randomizeData() {
       state.sensorNodes.forEach(node => {
         if (node.parameters.includes('temperatura')) {
@@ -1294,7 +1374,7 @@
       const count = Math.max(1, Math.min(8, Number(document.getElementById('adminOutputCount').value)));
       while (actuatorNode.outputs.length < count) {
         const idx = actuatorNode.outputs.length + 1;
-        actuatorNode.outputs.push({ id: actuatorNode.id + 'o' + idx, label: 'Iesire ' + idx, type: 'liber', status: false, lastCommand: '-' });
+        actuatorNode.outputs.push({ id: actuatorNode.id + 'o' + idx, label: 'Iesire ' + idx, type: 'liber', status: false, lastCommand: '-', autoEnabled: false, autoStart: '06:00', autoStop: '06:10', repeatMode: 'zilnic' });
       }
       actuatorNode.outputs = actuatorNode.outputs.slice(0, count);
       renderAll();
@@ -1327,8 +1407,8 @@
         status: 'online',
         mode: 'manual',
         outputs: [
-          { id: 'a' + idx + 'o1', label: 'Iesire 1', type: 'liber', status: false, lastCommand: '-' },
-          { id: 'a' + idx + 'o2', label: 'Iesire 2', type: 'liber', status: false, lastCommand: '-' }
+          { id: 'a' + idx + 'o1', label: 'Iesire 1', type: 'liber', status: false, lastCommand: '-', autoEnabled: false, autoStart: '06:00', autoStop: '06:10', repeatMode: 'zilnic' },
+          { id: 'a' + idx + 'o2', label: 'Iesire 2', type: 'liber', status: false, lastCommand: '-', autoEnabled: false, autoStart: '07:00', autoStop: '07:10', repeatMode: 'la_ora' }
         ]
       });
       renderAll();
@@ -1336,8 +1416,8 @@
     }
 
     function saveSettings() {
-      document.getElementById('brandTitle').textContent = document.getElementById('platformName').value || 'Platforma IoT';
-      document.getElementById('brandSubtitle').textContent = document.getElementById('projectName').value || 'Demo';
+      document.getElementById('brandTitle').textContent = document.getElementById('platformName').value || 'SIOTIN';
+      document.getElementById('brandSubtitle').textContent = document.getElementById('projectName').value || 'SIOTIN';
       showToast('Setari salvate');
     }
 
